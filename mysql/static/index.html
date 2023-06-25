@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	</head>
+	<body>
+		<div id="app">
+			<h1>todolist</h1>
+			<div v-if="show==1|show==2">
+				商品名称：<input type="text" name="name" v-model="name"/><br/>
+				商品价格：<input type="text" name="price" v-model="price"/><br/>
+				商品数量：<input type="text" name="number" v-model="number"/><br/>
+				<button @click="change" v-if="show==1">确认修改</button>
+				<button @click="add" v-if="show==2">确认添加</button>
+				<button @click="close">关闭</button>
+			</div>
+			<hr/>
+			<button @click="addButton">添加商品</button>
+			<ul>
+				<li v-for="item in list" :key="item.id">
+					<span >
+						{{item.name}}--{{item.price}}--{{item.number}}
+					</span>
+					<button @click="changeButton(item.id)">修改</button>
+					<button @click="remove(item.id)">删除</button>
+				</li>
+			</ul>
+		</div>
+		
+		<script type="text/javascript">
+			new Vue({
+				el:'#app',
+				data:{
+					list:[],
+					show:0,
+					name:'',
+					price:'',
+					number:'',
+					id:0
+				},
+				created(){
+					this.getData();
+				},
+				methods:{
+					getData(){
+						fetch('/list').then(res=>{
+							return res.json();
+						}).then(data=>{
+							this.list=data.data
+						})
+					},
+					remove(id){
+						fetch('/remove',{
+							method:'post',
+							headers:{
+								'Content-Type':'application/json;charset=utf-8'
+							},
+							body:JSON.stringify({
+								id
+							})
+						}).then(res=>{
+							return res.json();
+						}).then(data=>{
+							console.log(data.data)
+						});
+						this.getData();
+					},
+					add(){
+						fetch('/add',{
+							method:'post',
+							headers:{
+								'Content-Type':'application/json;charset=utf-8'
+							},
+							body:JSON.stringify({
+								name:this.name,
+								price:this.price,
+								number:this.number,
+							})
+						}).then(res=>{
+							return res.json();
+						}).then(data=>{
+							console.log(data.data)
+						});
+						this.getData();
+					},
+					addButton(){
+						this.show=2
+					},
+					changeButton(id){
+						this.show=true,
+						this.id=id
+					},
+					close(){
+						this.show=false
+					},
+					change(){
+						fetch('/change',{
+							method:'post',
+							headers:{
+								'Content-Type':'application/json;charset=utf-8'
+							},
+							body:JSON.stringify({
+								id:this.id,
+								name:this.name,
+								price:this.price,
+								number:this.number,
+							})
+						}).then(res=>{
+							return res.json();
+						}).then(data=>{
+							console.log(data.data)
+						})
+						this.getData();
+					}
+				}
+				
+			})
+		</script>
+	</body>
+</html>

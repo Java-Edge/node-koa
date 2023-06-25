@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<h1>{{appName}}</h1>
+		<hr/>
+		<form action="/changeInfo/{{datas.id}}" method="POST">
+			商品名称：<input type="text" name="name" placeholder="{{datas.name}}"/><br/>
+			商品价格：<input type="text" name="price" placeholder="{{datas.price}}"/><br/>
+			商品库存：<input type="text" name="number" placeholder="{{datas.number}}"/><br/>
+			<button>确定修改</button>
+		</form>
+	</body>
+</html>

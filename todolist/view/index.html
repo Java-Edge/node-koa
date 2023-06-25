@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet"  href="/static/{{datas.color}}"/>
+	</head>
+	<body>
+	<h1>{{datas.appName}}</h1>
+	<a href="/add">添加商品</a>
+	<hr/>
+		<ul>
+			{% for item in datas.list%}
+				{% if item.number>4 %}
+					<li class="app">
+						{{item.id}}--{{item.name}}--{{item.price}}--{{item.number}}
+					</li>
+					<a href="/change/{{item.id}}">修改</a>
+					<a href="/remove/{{item.id}}">删除</a>
+				{% else %}
+					<li class="app2">
+						{{item.id}}--{{item.name}}--{{item.price}}--{{item.number}}
+					</li>
+					<a href="/change/{{item.id}}">修改</a>
+					<a href="/remove/{{item.id}}">删除</a>
+				{% endif %}
+			{% endfor%}
+		</ul>
+	</body>
+</html>
